@@ -33,7 +33,7 @@ from tradingagents.llm_clients import create_llm_client
 
 PROVIDER_DEFAULTS = {
     "openai": ("gpt-5.4-mini", None),
-    "google": ("gemini-2.5-flash", None),
+    "google": ("gemini-3.7-flash", None),
     "anthropic": ("claude-sonnet-4-6", None),
     "deepseek": ("deepseek-chat", None),
     "qwen": ("qwen-plus", None),

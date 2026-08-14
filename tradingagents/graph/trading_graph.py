@@ -45,6 +45,7 @@ from .setup import GraphSetup
 from .propagation import Propagator
 from .reflection import Reflector
 from .signal_processing import SignalProcessor
+from tradingagents.execution.alpaca_engine import AlpacaExecutor
 
 
 class TradingAgentsGraph:
@@ -75,6 +76,9 @@ class TradingAgentsGraph:
         # Create necessary directories
         os.makedirs(self.config["data_cache_dir"], exist_ok=True)
         os.makedirs(self.config["results_dir"], exist_ok=True)
+
+        # Initialize Execution Engine
+        self.alpaca_executor = AlpacaExecutor(self.config)
 
         # Initialize LLMs with provider-specific thinking configuration
         llm_kwargs = self._get_provider_kwargs()
@@ -382,7 +386,11 @@ class TradingAgentsGraph:
                 self.config["data_cache_dir"], company_name, str(trade_date)
             )
 
-        return final_state, self.process_signal(final_state["final_trade_decision"])
+        # Extract the rating and execute
+        rating = self.process_signal(final_state["final_trade_decision"])
+        self.alpaca_executor.execute_rating(company_name, rating)
+
+        return final_state, rating
 
     def _log_state(self, trade_date, final_state):
         """Log the final state to a JSON file."""

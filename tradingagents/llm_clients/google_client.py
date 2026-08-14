@@ -42,7 +42,7 @@ class GoogleClient(BaseLLMClient):
 
         # Map thinking_level to appropriate API param based on model
         # Gemini 3 Pro: low, high
-        # Gemini 3 Flash: minimal, low, medium, high
+        # Gemini 3.x Flash (incl. 3.7): minimal, low, medium, high
         # Gemini 2.5: thinking_budget (0=disable, -1=dynamic)
         thinking_level = self.kwargs.get("thinking_level")
         if thinking_level:
